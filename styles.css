@@ -1,1 +1,69 @@
+/* color variables */
 
+:root {
+  --dark-blue: #1f1f3d;
+  --yellow: #ffc30c;
+  --white: #ffffff;
+  --orange: #ef4a23;
+  --blue: #587a8a;
+  --grey-blue: #c7d3d8;
+}
+
+/* all */
+
+* {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+
+/* page header */
+
+.page-header {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--dark-blue);
+  color: var(--white);
+}
+
+.page-title {
+  font-size: 2.5em;
+  font-weight: 800;
+  margin-left: 1%;
+}
+
+.span {
+  color: var(--yellow);
+}
+
+.search-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 60%;
+  width: 40%;
+  margin-right: 1%;
+}
+
+.search-button {
+  height: 111%;
+  width: 10%;
+  border: 0px;
+  background-color: var(--grey-blue);
+  border-top-left-radius: 8%;
+  border-bottom-left-radius: 8%;
+}
+
+.search-input {
+  font-size: 1.5em;
+  height: 100%;
+  width: 90%;
+}
