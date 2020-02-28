@@ -10,8 +10,13 @@ class List {
     this.tasks.push(task)
   }
 
-  saveToStorage() {
-    
+  saveToStorage(list) {
+    var stringedList = JSON.stringify(list)
+    localStorage.setItem('list', stringedList)
+  }
+
+  getFromStorage() {
+    var parsedList = JSON.parse(localStorage.getItem('list'))
   }
 
   retrieveFromStorage() {

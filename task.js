@@ -6,6 +6,6 @@ class Task {
   }
 
   updateChecked() {
-
+    this.checked = true;
   }
 }

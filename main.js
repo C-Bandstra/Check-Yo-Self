@@ -20,10 +20,10 @@ function clickHandler(event) {
   if(event.target.classList.contains('create-list-btn')) {
     list.title = `${titleInput.value}`
     displayList();
-    clearInputs()
+    clearInputs();
   }
   if(event.target.classList.contains('clear-all-btn')) {
-    clearInputs()
+    clearInputs();
   }
 }
 
@@ -35,6 +35,7 @@ function clearInputs() {
 }
 
 function displayList() {
+    list.getFromStorage();
     rightMain.insertAdjacentHTML("afterbegin",`
     <section class="task-card-container">
     <h3 class="task-card-title">${list.title}</h3>
@@ -53,6 +54,7 @@ function displayList() {
   </section>`)
   console.log(list)
   displayTasks();
+  list.saveToStorage(list);
   list = new List();
 }
 
