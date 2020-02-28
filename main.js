@@ -1,6 +1,16 @@
+// Variables
+var body = document.querySelector('body');
+var taskInput = document.querySelector('.task-item-input');
+var titleInput = document.querySelector('.list-title-input')
+var addTaskBtn = document.querySelector('.add-task-btn');
+// var clearBtn = document.querySelector('.clear-all-btn')
+var rightMain = document.querySelector('.right-main')
+var unstagedTasks = document.querySelector('.unstaged-task-container')
+var list = new List();
+
+
 // Event Listeners
 body.addEventListener('click', clickHandler)
-
 
 // Functions
 function clickHandler(event) {
