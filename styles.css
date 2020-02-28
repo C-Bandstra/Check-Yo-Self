@@ -207,6 +207,8 @@ html, body {
 /* displayed list column */
 
 .right-main {
+  display: flex;
+  flex-wrap: wrap;
   height: 100%;
   width: 66%;
   background-color: var(--white);
@@ -214,7 +216,7 @@ html, body {
 }
 
 .task-card-container {
-  width: 40%;
+  width: 35%;
   height: 45%;
   border: 2px solid var(--grey-blue);
   padding: 2%;
