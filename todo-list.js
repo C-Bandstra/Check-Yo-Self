@@ -26,11 +26,7 @@ class List {
       displayStoredLists(parsedLists);
     }
   }
-
-  retrieveFromStorage() {
-
-  }
-
+  
   deleteFromStorage() {
 
   }
