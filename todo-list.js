@@ -1,9 +1,13 @@
 class List {
-  constructor(title, id) {
+  constructor(title) {
     this.title = title;
-    this.id = id;
+    this.id = Date.now();
     this.tasks = [];
     this.urgent = false;
+  }
+
+  updateTitle(taskInput) {
+    list.title = `${titleInput.value}`
   }
 
   updateListTasks(task) {
@@ -11,7 +15,6 @@ class List {
   }
 
   saveToStorage(list, lists) {
-    debugger
     lists.push(list)
     var stringedLists = JSON.stringify(lists);
     localStorage.setItem('lists', stringedLists)
