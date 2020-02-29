@@ -1,11 +1,15 @@
 // Variables
 var body = document.querySelector('body');
+var leftMain = document.querySelector('.left-main')
 var taskInput = document.querySelector('.task-item-input');
-var titleInput = document.querySelector('.list-title-input')
+var titleInput = document.querySelector('.list-title-input');
+var searchInput = document.querySelector('.search-input')
 var addTaskBtn = document.querySelector('.add-task-btn');
-// var clearBtn = document.querySelector('.clear-all-btn')
-var rightMain = document.querySelector('.right-main')
-var unstagedTasks = document.querySelector('.unstaged-task-container')
+var clearBtn = document.querySelector('.clear-all-btn')
+var createListBtn = document.querySelector('.create-list-btn');
+var searchBtn = document.querySelector('.search-btn');
+var rightMain = document.querySelector('.right-main');
+var unstagedTasks = document.querySelector('.unstaged-task-container');
 var list = new List();
 window.onload = list.getFromStorage();
 var lists = JSON.parse(localStorage.getItem('list')) || [];
@@ -13,14 +17,16 @@ var lists = JSON.parse(localStorage.getItem('list')) || [];
 
 // Event Listeners
 body.addEventListener('click', clickHandler)
+body.addEventListener('input', buttonStatus)
 
 // Functions
 function clickHandler(event) {
   if(event.target.classList.contains('add-task-btn')) {
     displayUnstagedTask();
+    buttonStatus();
   }
   if(event.target.classList.contains('create-list-btn')) {
-    list.title = `${titleInput.value}`
+    list.updateTitle(taskInput)
     displayList();
     clearInputs();
   }
@@ -29,15 +35,31 @@ function clickHandler(event) {
   }
 }
 
+function buttonStatus() {
+  searchInput.value ? searchBtn.removeAttribute('disabled') : searchBtn.setAttribute('disabled', 'disabled')
+  taskInput.value ? addTaskBtn.removeAttribute('disabled') : addTaskBtn.setAttribute('disabled', 'disabled')
+  if(unstagedTasks.innerHTML != '' && titleInput.value) {
+    createListBtn.removeAttribute('disabled')
+  } else {
+    createListBtn.setAttribute('disabled', 'disabled')
+  }
+  debugger
+  if(taskInput.value || titleInput.value) {
+    clearBtn.removeAttribute('disabled')
+  } else {
+    clearBtn.setAttribute('disabled', 'disabled')
+  }
+}
+
 function clearInputs() {
   titleInput.value = '';
   taskInput.value = '';
   unstagedTasks.innerHTML = '';
-
+  buttonStatus()
 }
 
 function displayStoredLists(parsedLists) {
-  parsedLists.forEach((storedList, i) => {
+    parsedLists.forEach((storedList, i) => {
     rightMain.insertAdjacentHTML('afterbegin', `
     <section class="task-card-container">
     <h3 class="task-card-title">${storedList.title}</h3>
@@ -55,7 +77,31 @@ function displayStoredLists(parsedLists) {
     </section>
   </section>`)
   displayStoredTasks(parsedLists[i].tasks);
-    });
+  });
+}
+
+function displayStoredTasks(storedTasks) {
+  var storedCardTaskContainer = document.getElementById('stored-card-tasks')
+  storedTasks.forEach(storedTask => {
+    storedCardTaskContainer.insertAdjacentHTML('beforeend', `
+    <div id="${storedTask.id}" class="create-task-container">
+        <img src="assets/delete.svg" alt="checkbox" class="delete-task-img">
+        <p class="create-task-name">${storedTask.title}</p>
+      </div>`)
+  });
+}
+
+function displayUnstagedTask() {
+  var taskTitle = taskInput.value;
+  var task = new Task(taskTitle);
+  unstagedTasks.insertAdjacentHTML('beforeend',
+     ` <div id="${task.id}" class="create-task-container">
+        <img src="assets/delete.svg" alt="checkbox" class="delete-task-img">
+        <p class="create-task-name">${task.title}</p>
+      </div>`);
+  list.updateListTasks(task)
+  taskInput.value = ''
+  addTaskBtn.setAttribute('disabled', 'disabled')
 }
 
 function displayList() {
@@ -81,31 +127,9 @@ function displayList() {
   list = new List();
 }
 
-function displayStoredTasks(storedTasks) {
-  var storedCardTaskContainer = document.getElementById('stored-card-tasks')
-  storedTasks.forEach(storedTask => {
-    storedCardTaskContainer.insertAdjacentHTML('beforeend', `
-    <div id="${storedTask.id}" class="create-task-container">
-        <img src="assets/delete.svg" alt="checkbox" class="delete-task-img">
-        <p class="create-task-name">${storedTask.title}</p>
-      </div>`)
-  });
-}
-
 function displayTasks() {
   var cardTaskContainer = document.getElementById('card-tasks')
   cardTaskContainer.innerHTML = unstagedTasks.innerHTML;
-  unstagedTasks.innerHTML = ''
-}
-
-function displayUnstagedTask() {
-  var taskTitle = taskInput.value;
-  var task = new Task(taskTitle);
-  unstagedTasks.insertAdjacentHTML('beforeend',
-     ` <div id="${task.id}" class="create-task-container">
-        <img src="assets/delete.svg" alt="checkbox" class="delete-task-img">
-        <p class="create-task-name">${task.title}</p>
-      </div>`);
-  list.updateListTasks(task)
-  taskInput.value = ''
+  unstagedTasks.innerHTML = '';
+  createListBtn.setAttribute('disabled', 'disabled')
 }
