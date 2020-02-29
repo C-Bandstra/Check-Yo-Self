@@ -148,6 +148,7 @@ function displayTasks() {
 
 function removeCard() {
   var taskContainer = event.target.closest('section');
+  taskContainer.remove();
   unstagedTasks.innerHTML = '';
   lists.forEach((list, i) => {
     if(taskContainer.id == list.id) {
