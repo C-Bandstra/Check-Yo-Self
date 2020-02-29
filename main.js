@@ -1,6 +1,5 @@
 // Variables
 var body = document.querySelector('body');
-var leftMain = document.querySelector('.left-main')
 var taskInput = document.querySelector('.task-item-input');
 var titleInput = document.querySelector('.list-title-input');
 var searchInput = document.querySelector('.search-input');
@@ -16,8 +15,8 @@ var lists = JSON.parse(localStorage.getItem('lists')) || [];
 
 
 // Event Listeners
-body.addEventListener('click', clickHandler)
-body.addEventListener('input', buttonStatus)
+body.addEventListener('click', clickHandler);
+body.addEventListener('input', buttonStatus);
 
 // Functions
 function clickHandler(event) {
@@ -26,7 +25,7 @@ function clickHandler(event) {
     buttonStatus();
   }
   if(event.target.classList.contains('create-list-btn')) {
-    list.updateTitle(taskInput)
+    list.updateTitle(taskInput);
     displayList();
     clearInputs();
   }
@@ -42,17 +41,17 @@ function clickHandler(event) {
 }
 
 function buttonStatus() {
-  searchInput.value ? searchBtn.removeAttribute('disabled') : searchBtn.setAttribute('disabled', 'disabled')
-  taskInput.value ? addTaskBtn.removeAttribute('disabled') : addTaskBtn.setAttribute('disabled', 'disabled')
+  searchInput.value ? searchBtn.removeAttribute('disabled') : searchBtn.setAttribute('disabled', 'disabled');
+  taskInput.value ? addTaskBtn.removeAttribute('disabled') : addTaskBtn.setAttribute('disabled', 'disabled');
   if(unstagedTasks.innerHTML != '' && titleInput.value) {
-    createListBtn.removeAttribute('disabled')
+    createListBtn.removeAttribute('disabled');
   } else {
-    createListBtn.setAttribute('disabled', 'disabled')
+    createListBtn.setAttribute('disabled', 'disabled');
   }
-  if(taskInput.value || titleInput.value) {
-    clearBtn.removeAttribute('disabled')
+  if(unstagedTasks.innerHTML != '' || titleInput.value) {
+    clearBtn.removeAttribute('disabled');
   } else {
-    clearBtn.setAttribute('disabled', 'disabled')
+    clearBtn.setAttribute('disabled', 'disabled');
   }
 }
 
@@ -60,7 +59,7 @@ function clearInputs() {
   titleInput.value = '';
   taskInput.value = '';
   unstagedTasks.innerHTML = '';
-  buttonStatus()
+  buttonStatus();
 }
 
 function displayStoredLists(parsedLists) {
@@ -86,7 +85,7 @@ function displayStoredLists(parsedLists) {
 }
 
 function displayStoredTasks(storedTasks) {
-  var storedCardTaskContainer = document.getElementById('stored-card-tasks')
+  var storedCardTaskContainer = document.getElementById('stored-card-tasks');
   storedTasks.forEach(storedTask => {
     storedCardTaskContainer.insertAdjacentHTML('beforeend', `
       <section id="${storedTask.id}" class="create-task-container">
