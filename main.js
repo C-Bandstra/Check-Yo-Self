@@ -34,9 +34,10 @@ function clickHandler(event) {
   }
   if(event.target.classList.contains('delete-img')) {
     removeCard();
+    buttonStatus();
   }
   if(event.target.classList.contains('checkbox-img')) {
-    displayCheck()
+    displayCheck();
   }
 }
 
@@ -79,7 +80,7 @@ function displayStoredLists(parsedLists) {
         <p class="delete-text">DELETE</p>
       </div>
     </div>
-  </section>`)
+  </section>`);
   displayStoredTasks(parsedLists[i].tasks);
   });
 }
@@ -91,7 +92,7 @@ function displayStoredTasks(storedTasks) {
       <section id="${storedTask.id}" class="create-task-container">
         <img data-id="unchecked" src="assets/checkbox.svg" alt="checkbox" class="checkbox-img">
         <p class="create-task-name">${storedTask.title}</p>
-      </section>`)
+      </section>`);
   });
 }
 
@@ -103,9 +104,9 @@ function displayUnstagedTask() {
         <img data-id="unchecked" id="delete" src="assets/delete.svg" class="delete-img delete-task-img">
         <p class="create-task-name">${task.title}</p>
       </section>`);
-  list.updateListTasks(task)
+  list.updateListTasks(task);
   taskInput.value = ''
-  addTaskBtn.setAttribute('disabled', 'disabled')
+  addTaskBtn.setAttribute('disabled', 'disabled');
 }
 
 function displayList() {
@@ -124,7 +125,7 @@ function displayList() {
         <p class="delete-text">DELETE</p>
       </div>
     </div>
-  </section>`)
+  </section>`);
   displayTasks();
   list.saveToStorage(list, lists);
   list = new List();
@@ -139,7 +140,7 @@ function displayTasks() {
     <section id="${taskId}" class="create-task-container">
       <img data-id="unchecked" id="delete" src="assets/checkbox.svg" class="checkbox-img" img>
       <p class="create-task-name">${taskTitle}</p>
-    </section>`)
+    </section>`);
   }
   unstagedTasks.innerHTML = '';
   createListBtn.setAttribute('disabled', 'disabled');
@@ -147,7 +148,7 @@ function displayTasks() {
 
 function removeCard() {
   var taskContainer = event.target.closest('section');
-  taskContainer.remove();
+  unstagedTasks.innerHTML = '';
   lists.forEach((list, i) => {
     if(taskContainer.id == list.id) {
       lists.splice(i, 1);
