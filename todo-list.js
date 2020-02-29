@@ -15,6 +15,7 @@ class List {
   }
 
   saveToStorage(list, lists) {
+    debugger
     lists.push(list)
     var stringedLists = JSON.stringify(lists);
     localStorage.setItem('lists', stringedLists)
