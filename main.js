@@ -43,8 +43,7 @@ function buttonStatus() {
   } else {
     createListBtn.setAttribute('disabled', 'disabled')
   }
-  debugger
-  if(taskInput.value || titleInput.value) {
+  if(unstagedTasks.innerHTML != '' || titleInput.value) {
     clearBtn.removeAttribute('disabled')
   } else {
     clearBtn.setAttribute('disabled', 'disabled')
