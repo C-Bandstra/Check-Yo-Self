@@ -111,7 +111,7 @@ function displayUnstagedTask() {
 
 function displayList() {
     rightMain.insertAdjacentHTML("afterbegin",`
-    <section class="task-card-container">
+    <section id="${list.id}" class="task-card-container">
     <h3 class="task-card-title">${list.title}</h3>
     <section id="card-tasks" class="task-card-items">
     </section>
@@ -147,11 +147,12 @@ function displayTasks() {
 }
 
 function removeCard() {
+  debugger
   var taskContainer = event.target.closest('section');
   taskContainer.remove();
   unstagedTasks.innerHTML = '';
-  lists.forEach((storedList, i) => {
-    if(taskContainer.id == storedList.id) {
+  lists.forEach((currentList, i) => {
+    if(taskContainer.id == currentList.id) {
       lists.splice(i, 1);
     }
   });
