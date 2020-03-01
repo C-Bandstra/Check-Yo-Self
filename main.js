@@ -10,8 +10,8 @@ var searchBtn = document.querySelector('.search-btn');
 var rightMain = document.querySelector('.right-main');
 var unstagedTasks = document.querySelector('.unstaged-task-container');
 var list = new List();
-window.onload = list.getFromStorage();
 var lists = JSON.parse(localStorage.getItem('lists')) || [];
+window.onload = displayStoredLists();
 
 
 // Event Listeners
@@ -64,7 +64,7 @@ function clearInputs() {
 }
 
 function displayStoredLists(parsedLists) {
-    parsedLists.forEach((storedList, i) => {
+    lists.forEach((storedList, i) => {
     rightMain.insertAdjacentHTML('afterbegin', `
     <section id="${storedList.id}" class="task-card-container">
     <h3 class="task-card-title">${storedList.title}</h3>
@@ -81,7 +81,7 @@ function displayStoredLists(parsedLists) {
       </div>
     </div>
   </section>`);
-  displayStoredTasks(parsedLists[i].tasks);
+  displayStoredTasks(lists[i].tasks);
   });
 }
 
@@ -111,7 +111,7 @@ function displayUnstagedTask() {
 
 function displayList() {
     rightMain.insertAdjacentHTML("afterbegin",`
-    <section class="task-card-container">
+    <section id="${list.id}" class="task-card-container">
     <h3 class="task-card-title">${list.title}</h3>
     <section id="card-tasks" class="task-card-items">
     </section>
@@ -147,14 +147,16 @@ function displayTasks() {
 }
 
 function removeCard() {
+  debugger
   var taskContainer = event.target.closest('section');
   taskContainer.remove();
   unstagedTasks.innerHTML = '';
-  lists.forEach((list, i) => {
-    if(taskContainer.id == list.id) {
+  lists.forEach((currentList, i) => {
+    if(taskContainer.id == currentList.id) {
       lists.splice(i, 1);
     }
   });
+  list.deleteFromStorage(lists);
 }
 
 function displayCheck() {
