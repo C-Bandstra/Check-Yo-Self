@@ -6,30 +6,23 @@ class List {
     this.urgent = false;
   }
 
-  updateTitle(taskInput) {
-    list.title = `${titleInput.value}`
+  updateTitle() {
+    list.title = `${titleInput.value}`;
   }
 
   updateListTasks(task) {
-    this.tasks.push(task)
+    this.tasks.push(task);
   }
 
   saveToStorage(list, lists) {
-    debugger
-    lists.push(list)
+    lists.push(list);
     var stringedLists = JSON.stringify(lists);
-    localStorage.setItem('lists', stringedLists)
-  }
-
-  getFromStorage() {
-    var parsedLists = JSON.parse(localStorage.getItem('lists'))
-    if(parsedLists) {
-      displayStoredLists(parsedLists);
-    }
+    localStorage.setItem('lists', stringedLists);
   }
   
-  deleteFromStorage() {
-
+  deleteFromStorage(lists) {
+    var stringedLists = JSON.stringify(lists);
+    localStorage.setItem('lists', stringedLists);
   }
 
   updateToDo() {
