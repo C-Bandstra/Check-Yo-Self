@@ -4,8 +4,4 @@ class Task {
     this.id = Date.now();
     this.checked = false;
   }
-
-  updateChecked() {
-    this.checked = true;
-  }
 }
