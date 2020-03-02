@@ -29,12 +29,11 @@ class List {
 
   }
 
-  updateTask(task) {
-    debugger
-    if(event.target.dataset.id === 'checked') {
-      task.checked = true;
-    } else {
-      task.checked = false;
-    }
+  updateTask() {
+    this.tasks.forEach(task => {
+      task.checked ? task.checked = false : task.checked = true;
+    });
+    var stringedLists = JSON.stringify(lists)
+    localStorage.setItem('lists', stringedLists)
   }
 }
