@@ -37,7 +37,6 @@ function clickHandler(event) {
   }
   if(event.target.classList.contains('checkbox-img')) {
     displayCheck();
-    deleteButtonStatus();
   }
 }
 
@@ -53,31 +52,6 @@ function buttonStatus() {
     clearBtn.removeAttribute('disabled');
   } else {
     clearBtn.setAttribute('disabled', 'disabled');
-  }
-}
-
-function deleteButtonStatus() {
-  debugger
-  var deleteStatus;
-  lists.forEach(list => {
-    for (let i = 0; i < list.tasks.length; i++) {
-      if(list.tasks[i].checked) {
-        deleteStatus = true;
-      } else {
-        deleteStatus = false;
-        break;
-      }
-    }
-  });
-  displayDelete(deleteStatus);
-}
-
-function displayDelete(deleteStatus) {
-  var deleteImg = document.getElementById('delete')
-  if(deleteStatus) {
-    deleteImg.src = 'assets/delete-active.svg';
-  } else {
-    deleteImg.src = 'assets/delete.svg';
   }
 }
 
@@ -124,7 +98,7 @@ function displayList(listType) {
         <p class="urgent-text">URGENT</p>
       </div>
       <div class="delete-container">
-        <img id="delete" src="assets/delete.svg" class="delete-img delete-list-img">
+        <img src="assets/delete.svg" class="delete-img delete-list-img">
         <p class="delete-text">DELETE</p>
       </div>
     </div>
@@ -202,7 +176,6 @@ function parseObject() {
     var newList = new List(lsList.title, lsList.id, lsList.tasks)
     fullList.push(newList);
     checkListType(newList);
-    deleteButtonStatus();
   })
   lists = fullList;
 }
