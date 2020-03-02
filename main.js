@@ -13,7 +13,6 @@ var list = new List();
 var lists = JSON.parse(localStorage.getItem('lists')) || [];
 window.onload = parseObject();
 
-
 // Event Listeners
 body.addEventListener('click', clickHandler);
 body.addEventListener('input', buttonStatus);
@@ -37,7 +36,7 @@ function clickHandler(event) {
     buttonStatus();
   }
   if(event.target.classList.contains('checkbox-img')) {
-    trackCheck();
+    displayCheck();
   }
 }
 
@@ -64,7 +63,6 @@ function clearInputs() {
 }
 
 function checkListType(lsList) {
-  debugger
   var listType;
   if(lsList == undefined) {
     listType = list;
@@ -89,7 +87,6 @@ function displayUnstagedTask() {
 }
 
 function displayList(listType) {
-  debugger
     rightMain.insertAdjacentHTML("afterbegin",`
     <section id="${listType.id}" class="task-card-container">
     <h3 class="task-card-title">${listType.title}</h3>
@@ -113,14 +110,14 @@ function displayList(listType) {
 }
 
 function displayTasks(listType) {
-  debugger
   var cardTaskContainer = document.getElementById('card-tasks')
   for (var i = 0; i < listType.tasks.length; i++) {
+    var check = stateOfCheck(listType.tasks[i]);
     var taskTitle = listType.tasks[i].title
     var taskId = listType.tasks[i].id
     cardTaskContainer.insertAdjacentHTML('beforeend',`
     <section id="${taskId}" class="create-task-container">
-      <img id="${taskId}" data-id="unchecked" id="delete" src="assets/checkbox.svg" class="checkbox-img" img>
+      <img id="${taskId}" data-id="${check}" id="delete" src="assets/checkbox${check}.svg" class="checkbox-img" img>
       <p class="create-task-name">${taskTitle}</p>
     </section>`);
   }
@@ -128,8 +125,17 @@ function displayTasks(listType) {
   createListBtn.setAttribute('disabled', 'disabled');
 }
 
+function stateOfCheck(task) {
+  var checked;
+  if(task.checked) {
+    checked = '-active';
+  } else {
+    checked = '';
+  }
+  return checked
+}
+
 function removeCard() {
-  debugger
   var taskContainer = event.target.closest('section');
   taskContainer.remove();
   unstagedTasks.innerHTML = '';
@@ -141,35 +147,35 @@ function removeCard() {
   list.deleteFromStorage(lists);
 }
 
-function changeCheck() {
-  debugger
-  lists.forEach(createdList => {
-    createdList.tasks.forEach(task => {
-      if(event.target.id || task.id == task.id) {
-        createdList.updateTask(task)
-        displayCheck(task);
-      }
-    })
-  })
-}
-
 function displayCheck() {
-  if(event.target.dataset.id === 'unchecked') {;
-    event.target.dataset.id = 'checked';
+  if(event.target.dataset.id === '') {;
+    event.target.dataset.id = '-active';
     event.target.src = 'assets/checkbox-active.svg';
   } else {
-    event.target.dataset.id = 'unchecked';
+    event.target.dataset.id === '-active';
+    event.target.dataset.id = '';
     event.target.src = 'assets/checkbox.svg';
   }
+  trackCheck();
+}
+
+function trackCheck() {
+  var imgId = event.target.id
+  lists.forEach(createdList => {
+    createdList.tasks.forEach(task => {
+      if(imgId == task.id) {
+        createdList.updateTask();
+      }
+    });
+  });
 }
 
 function parseObject() {
   var fullList = []
   lists.forEach(lsList => {
     var newList = new List(lsList.title, lsList.id, lsList.tasks)
-    fullList.push(newList)
-    checkListType(newList)
-    // displayCheck();
+    fullList.push(newList);
+    checkListType(newList);
   })
   lists = fullList;
 }
