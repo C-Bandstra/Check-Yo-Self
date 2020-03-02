@@ -1,13 +1,13 @@
 class List {
-  constructor(title) {
+  constructor(title, id, tasks) {
     this.title = title;
-    this.id = Date.now();
-    this.tasks = [];
+    this.id = id || Date.now();
+    this.tasks = tasks || [];
     this.urgent = false;
   }
 
   updateTitle() {
-    list.title = `${titleInput.value}`;
+    this.title = `${titleInput.value}`;
   }
 
   updateListTasks(task) {
@@ -29,7 +29,12 @@ class List {
 
   }
 
-  updateTask() {
-
+  updateTask(task) {
+    debugger
+    if(event.target.dataset.id === 'checked') {
+      task.checked = true;
+    } else {
+      task.checked = false;
+    }
   }
 }
