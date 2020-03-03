@@ -14,13 +14,13 @@ class List {
     this.tasks.push(task);
   }
 
-  saveToStorage(list, lists) {
-    lists.push(list);
+  saveToStorage() {
+    lists.push(this);
     var stringedLists = JSON.stringify(lists);
     localStorage.setItem('lists', stringedLists);
   }
   
-  deleteFromStorage(lists) {
+  deleteFromStorage() {
     var stringedLists = JSON.stringify(lists);
     localStorage.setItem('lists', stringedLists);
   }

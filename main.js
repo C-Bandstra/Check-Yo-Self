@@ -66,7 +66,7 @@ function displayList(listType) {
       </div>
     </section>`);
   if(list.tasks.length) {
-    list.saveToStorage(lists);
+    list.saveToStorage();
     displayTasks(listType)
     list = new List();
   }
@@ -153,7 +153,7 @@ function removeCard() {
   list.tasks.forEach((task, i) => {
     taskContainer.id == task.id ? list.tasks.splice(i, 1) : null;
   });
-  list.deleteFromStorage(lists);
+  list.deleteFromStorage();
 }
 
 function displayCheck() {
