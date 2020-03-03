@@ -151,7 +151,7 @@ function checkListType(lsList) {
 function stateOfCheck(task) {
   var checked;
   task.checked ? checked = '-active' : checked = '';
-  return checked
+  return checked;
 }
 
 function removeCard() {
@@ -179,7 +179,7 @@ function displayCheck() {
 }
 
 function trackCheck() {
-  var imgId = event.target.id
+  var imgId = event.target.id;
   lists.forEach(createdList => {
     createdList.tasks.forEach(task => {
       if(imgId == task.id) {
@@ -190,7 +190,7 @@ function trackCheck() {
 }
 
 function parseObject() {
-  var fullList = []
+  var fullList = [];
   lists.forEach(lsList => {
     var newList = new List(lsList.title, lsList.id, lsList.tasks)
     fullList.push(newList);
