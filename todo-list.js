@@ -1,35 +1,33 @@
 class List {
-  constructor(title) {
+  constructor(title, id, tasks) {
     this.title = title;
-    this.id = Date.now();
-    this.tasks = [];
+    this.id = id || Date.now();
+    this.tasks = tasks || [];
     this.urgent = false;
   }
 
   updateTitle() {
-    list.title = `${titleInput.value}`;
+    this.title = `${titleInput.value}`;
   }
 
   updateListTasks(task) {
     this.tasks.push(task);
   }
 
-  saveToStorage(list, lists) {
-    lists.push(list);
+  saveToStorage() {
+    lists.push(this);
     var stringedLists = JSON.stringify(lists);
     localStorage.setItem('lists', stringedLists);
   }
   
-  deleteFromStorage(lists) {
+  deleteFromStorage() {
     var stringedLists = JSON.stringify(lists);
     localStorage.setItem('lists', stringedLists);
   }
 
-  updateToDo() {
-
-  }
-
-  updateTask() {
-
+  updateTask(task) {
+    task.checked = !task.checked
+    var stringedLists = JSON.stringify(lists)
+    localStorage.setItem('lists', stringedLists);
   }
 }

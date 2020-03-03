@@ -22,6 +22,10 @@ html, body {
   width: 100%;
 }
 
+img {
+  pointer-events: none;
+}
+
 /* page header */
 
 .page-header {
@@ -274,19 +278,33 @@ html, body {
   width: 25px;
   cursor: pointer;
 }
-.delete-list-img {
-  width: 30px;
+
+img.delete-list-img {
+  width: 100%;
   cursor: pointer;
+}
+
+.delete-btn {
+  background-color: var(--white);
+  width: 40px;
+  border: 0px;
+  cursor: pointer;
+  outline: none;
+  pointer-events: all;
+}
+
+img.delete-btn {
+  background-color: var(--blue);
 }
 
 .delete-task-img {
   width: 20px;
   cursor: pointer;
 }
-
-.checkbox-img {
+img.checkbox-img {
   width: 20px;
   cursor: pointer;
+  pointer-events: all;
 }
 
 .urgent-container,
