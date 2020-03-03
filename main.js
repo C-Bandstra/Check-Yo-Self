@@ -26,7 +26,7 @@ function clickHandler(event) {
   }
   if(classList.contains('create-list-btn')) {
     list.updateTitle();
-    checkListType()
+    displayList(list);
     clearInputs();
   }
   if(classList.contains('clear-all-btn')) {
@@ -43,7 +43,7 @@ function clickHandler(event) {
 }
 
 function displayList(listType) {
-  var deleteStatus = listType.tasks.every(task => task.checked) === true;
+  var deleteStatus = listType.tasks.every(task => task.checked)
   var status = deleteStatus;
   deleteStatus ? deleteImg = '-active' : deleteImg = '';
   status ? status = '' : status = 'disabled'
@@ -66,7 +66,8 @@ function displayList(listType) {
       </div>
     </section>`);
   if(list.tasks.length) {
-    list.saveToStorage(list, lists);
+    list.saveToStorage(lists);
+    displayTasks(listType)
     list = new List();
   }
 }
@@ -92,7 +93,7 @@ function displayUnstagedTask() {
   var task = new Task(taskTitle);
   unstagedTasks.insertAdjacentHTML('beforeend',
      ` <section id="${task.id}" class="create-task-container">
-        <img data-id="unchecked" id="delete" src="assets/delete.svg" class="delete-img delete-task-img">
+        <img data-id="unchecked" id="delete" src="assets/delete.svg" class=" delete-img delete-task-img delete-btn">
         <p class="create-task-name">${task.title}</p>
       </section>`);
   list.updateListTasks(task);
@@ -110,7 +111,7 @@ function deleteStatus() {
       currentList = list;
     }
   })
-  var deleteStatus = currentList.tasks.every(task => task.checked) === true;
+  var deleteStatus = currentList.tasks.every(task => task.checked);
   deleteStatus ? deleteImg.src = 'assets/delete-active.svg' : deleteImg.src = 'assets/delete.svg';
   deleteStatus ? deleteBtn.removeAttribute('disabled') : deleteBtn.setAttribute('disabled', 'disabled');
 }
@@ -137,17 +138,6 @@ function clearInputs() {
   buttonStatus();
 }
 
-function checkListType(lsList) {
-  var listType;
-  if(lsList == undefined) {
-    listType = list;
-  } else {
-    listType = lsList;
-  }
-  displayList(listType);
-  displayTasks(listType);
-}
-
 function stateOfCheck(task) {
   var checked;
   task.checked ? checked = '-active' : checked = '';
@@ -158,9 +148,10 @@ function removeCard() {
   var taskContainer = event.target.closest('section');
   taskContainer.remove();
   lists.forEach((currentList, i) => {
-    if(taskContainer.id == currentList.id) {
-      lists.splice(i, 1);
-    }
+    taskContainer.id == currentList.id ? lists.splice(i, 1) : null;
+  });
+  list.tasks.forEach((task, i) => {
+    taskContainer.id == task.id ? list.tasks.splice(i, 1) : null;
   });
   list.deleteFromStorage(lists);
 }
@@ -194,7 +185,8 @@ function parseObject() {
   lists.forEach(lsList => {
     var newList = new List(lsList.title, lsList.id, lsList.tasks)
     fullList.push(newList);
-    checkListType(newList);
+    displayList(newList);
+    displayTasks(newList);
   })
   lists = fullList;
 }
