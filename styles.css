@@ -293,6 +293,10 @@ img.delete-list-img {
   pointer-events: all;
 }
 
+img.delete-btn {
+  background-color: var(--blue);
+}
+
 .delete-task-img {
   width: 20px;
   cursor: pointer;
