@@ -19,25 +19,100 @@ body.addEventListener('input', buttonStatus);
 
 // Functions
 function clickHandler(event) {
-  if(event.target.classList.contains('add-task-btn')) {
+  var classList = event.target.classList
+  if(classList.contains('add-task-btn')) {
     displayUnstagedTask();
     buttonStatus();
   }
-  if(event.target.classList.contains('create-list-btn')) {
+  if(classList.contains('create-list-btn')) {
     list.updateTitle();
     checkListType()
     clearInputs();
   }
-  if(event.target.classList.contains('clear-all-btn')) {
+  if(classList.contains('clear-all-btn')) {
     clearInputs();
   }
-  if(event.target.classList.contains('delete-img')) {
+  if(classList.contains('delete-btn')) {
     removeCard();
     buttonStatus();
   }
-  if(event.target.classList.contains('checkbox-img')) {
+  if(classList.contains('checkbox-img')) {
     displayCheck();
+    deleteStatus();
   }
+}
+
+function displayList(listType) {
+  var deleteStatus = listType.tasks.every(task => task.checked) === true;
+  var status = deleteStatus;
+  deleteStatus ? deleteImg = '-active' : deleteImg = '';
+  status ? status = '' : status = 'disabled'
+  rightMain.insertAdjacentHTML("afterbegin",`
+    <section id="${listType.id}" class="task-card-container">
+      <h3 class="task-card-title">${listType.title}</h3>
+      <section id="card-tasks" class="task-card-items">
+      </section>
+      <div class="card-option-container">
+        <div class="urgent-container">
+          <img src="assets/urgent.svg" class="urgent-img">
+          <p class="urgent-text">URGENT</p>
+        </div>
+        <div class="delete-container">
+          <button ${status} class="delete-btn">
+            <img src="assets/delete${deleteImg}.svg" class="delete-img delete-list-img">
+          </button
+          <p class="delete-text">DELETE</p>
+        </div>
+      </div>
+    </section>`);
+  if(list.tasks.length) {
+    list.saveToStorage(list, lists);
+    list = new List();
+  }
+}
+
+function displayTasks(listType) {
+  var cardTaskContainer = document.getElementById('card-tasks')
+  for (var i = 0; i < listType.tasks.length; i++) {
+    var check = stateOfCheck(listType.tasks[i]);
+    var taskTitle = listType.tasks[i].title;
+    var taskId = listType.tasks[i].id;
+    cardTaskContainer.insertAdjacentHTML('beforeend',`
+    <section id="${taskId}" class="create-task-container">
+      <img id="${taskId}" data-id="${check}" id="delete" src="assets/checkbox${check}.svg" class="checkbox-img" img>
+      <p class="create-task-name">${taskTitle}</p>
+    </section>`);
+  }
+  unstagedTasks.innerHTML = '';
+  createListBtn.setAttribute('disabled', 'disabled');
+}
+
+function displayUnstagedTask() {
+  var taskTitle = taskInput.value;
+  var task = new Task(taskTitle);
+  unstagedTasks.insertAdjacentHTML('beforeend',
+     ` <section id="${task.id}" class="create-task-container">
+        <img data-id="unchecked" id="delete" src="assets/delete.svg" class="delete-img delete-task-img">
+        <p class="create-task-name">${task.title}</p>
+      </section>`);
+  list.updateListTasks(task);
+  taskInput.value = '';
+  addTaskBtn.setAttribute('disabled', 'disabled');
+}
+
+function deleteStatus() {
+  var currentList;
+  var card = event.target.closest('.task-card-container');
+  var deleteImg = card.querySelector('.delete-img');
+  var deleteBtn = card.querySelector('.delete-btn');
+  lists.forEach(list => {
+    if(list.id == card.id) {
+      currentList = list;
+    }
+  })
+  var deleteStatus = currentList.tasks.every(task => task.checked) === true;
+  deleteStatus ? deleteImg.src = 'assets/delete-active.svg' : deleteImg.src = 'assets/delete.svg';
+  deleteStatus ? deleteBtn.removeAttribute('disabled') : deleteBtn.setAttribute('disabled', 'disabled');
 }
 
 function buttonStatus() {
@@ -67,78 +142,21 @@ function checkListType(lsList) {
   if(lsList == undefined) {
     listType = list;
   } else {
-    listType = lsList
+    listType = lsList;
   }
   displayList(listType);
   displayTasks(listType);
 }
 
-function displayUnstagedTask() {
-  var taskTitle = taskInput.value;
-  var task = new Task(taskTitle);
-  unstagedTasks.insertAdjacentHTML('beforeend',
-     ` <section id="${task.id}" class="create-task-container">
-        <img data-id="unchecked" id="delete" src="assets/delete.svg" class="delete-img delete-task-img">
-        <p class="create-task-name">${task.title}</p>
-      </section>`);
-  list.updateListTasks(task);
-  taskInput.value = ''
-  addTaskBtn.setAttribute('disabled', 'disabled');
-}
-
-function displayList(listType) {
-    rightMain.insertAdjacentHTML("afterbegin",`
-    <section id="${listType.id}" class="task-card-container">
-    <h3 class="task-card-title">${listType.title}</h3>
-    <section id="card-tasks" class="task-card-items">
-    </section>
-    <div class="card-option-container">
-      <div class="urgent-container">
-        <img src="assets/urgent.svg" class="urgent-img">
-        <p class="urgent-text">URGENT</p>
-      </div>
-      <div class="delete-container">
-        <img src="assets/delete.svg" class="delete-img delete-list-img">
-        <p class="delete-text">DELETE</p>
-      </div>
-    </div>
-  </section>`);
-  if(list.tasks.length) {
-    list.saveToStorage(list, lists);
-    list = new List();
-  }
-}
-
-function displayTasks(listType) {
-  var cardTaskContainer = document.getElementById('card-tasks')
-  for (var i = 0; i < listType.tasks.length; i++) {
-    var check = stateOfCheck(listType.tasks[i]);
-    var taskTitle = listType.tasks[i].title
-    var taskId = listType.tasks[i].id
-    cardTaskContainer.insertAdjacentHTML('beforeend',`
-    <section id="${taskId}" class="create-task-container">
-      <img id="${taskId}" data-id="${check}" id="delete" src="assets/checkbox${check}.svg" class="checkbox-img" img>
-      <p class="create-task-name">${taskTitle}</p>
-    </section>`);
-  }
-  unstagedTasks.innerHTML = '';
-  createListBtn.setAttribute('disabled', 'disabled');
-}
-
 function stateOfCheck(task) {
   var checked;
-  if(task.checked) {
-    checked = '-active';
-  } else {
-    checked = '';
-  }
+  task.checked ? checked = '-active' : checked = '';
   return checked
 }
 
 function removeCard() {
   var taskContainer = event.target.closest('section');
   taskContainer.remove();
-  unstagedTasks.innerHTML = '';
   lists.forEach((currentList, i) => {
     if(taskContainer.id == currentList.id) {
       lists.splice(i, 1);
@@ -148,13 +166,14 @@ function removeCard() {
 }
 
 function displayCheck() {
-  if(event.target.dataset.id === '') {;
-    event.target.dataset.id = '-active';
-    event.target.src = 'assets/checkbox-active.svg';
+  var clicked = event.target
+  if(clicked.dataset.id === '') {;
+    clicked.dataset.id = '-active';
+    clicked.src = 'assets/checkbox-active.svg';
   } else {
-    event.target.dataset.id === '-active';
-    event.target.dataset.id = '';
-    event.target.src = 'assets/checkbox.svg';
+    clicked.dataset.id === '-active';
+    clicked.dataset.id = '';
+    clicked.src = 'assets/checkbox.svg';
   }
   trackCheck();
 }
@@ -164,7 +183,7 @@ function trackCheck() {
   lists.forEach(createdList => {
     createdList.tasks.forEach(task => {
       if(imgId == task.id) {
-        createdList.updateTask();
+        createdList.updateTask(task);
       }
     });
   });
