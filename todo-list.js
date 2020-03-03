@@ -25,15 +25,9 @@ class List {
     localStorage.setItem('lists', stringedLists);
   }
 
-  updateToDo() {
-
-  }
-
-  updateTask() {
-    this.tasks.forEach(task => {
-      task.checked ? task.checked = false : task.checked = true;
-    });
+  updateTask(task) {
+    task.checked = !task.checked
     var stringedLists = JSON.stringify(lists)
-    localStorage.setItem('lists', stringedLists)
+    localStorage.setItem('lists', stringedLists);
   }
 }
