@@ -23,4 +23,4 @@ HTML, CSS, and JavaScript
 * The x button can be clicked and the task will be deleted in the task staging area
 
 
-![Page](Pictures/check-yo-self)
+![Page](check-yo-self)
