@@ -1,9 +1,9 @@
 class List {
-  constructor(title, id, tasks) {
+  constructor(title, id, tasks, urgent) {
     this.title = title;
     this.id = id || Date.now();
     this.tasks = tasks || [];
-    this.urgent = false;
+    this.urgent = urgent || false;
   }
 
   updateTitle() {
@@ -15,19 +15,12 @@ class List {
   }
 
   saveToStorage() {
-    lists.push(this);
-    var stringedLists = JSON.stringify(lists);
-    localStorage.setItem('lists', stringedLists);
-  }
-  
-  deleteFromStorage() {
     var stringedLists = JSON.stringify(lists);
     localStorage.setItem('lists', stringedLists);
   }
 
   updateTask(task) {
     task.checked = !task.checked
-    var stringedLists = JSON.stringify(lists)
-    localStorage.setItem('lists', stringedLists);
+    this.saveToStorage();
   }
 }
