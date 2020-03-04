@@ -23,5 +23,4 @@ HTML, CSS, and JavaScript
 * The x button can be clicked and the task will be deleted in the task staging area
 
 
-![Page](Pictures/Screen Shot 2020-03-03 at 5.18.38 PM)
-Format: ![Alt Text](url)
+![Page](Pictures/check-yo-self)
