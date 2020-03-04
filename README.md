@@ -21,3 +21,6 @@ HTML, CSS, and JavaScript
 * The urgency button can be clicked and the user can visibly see which cards are urgent
 * The x icon on made lists can be clicked and the to-do list will delete if all boxes are checked
 * The x button can be clicked and the task will be deleted in the task staging area
+
+
+<img width="1439" alt="check-yo-self" src="https://user-images.githubusercontent.com/53810104/75912919-32eaf200-5e0f-11ea-9a15-a887a73442da.png">
