@@ -40,25 +40,34 @@ function clickHandler(event) {
     displayCheck();
     deleteStatus();
   }
+  if(classList.contains('urgent-container')) {
+    displayUrgency();
+  }
 }
 
 function displayList(listType) {
   var deleteStatus = listType.tasks.every(task => task.checked)
-  var status = deleteStatus;
+  var btnStatus = deleteStatus;
   deleteStatus ? deleteImg = '-active' : deleteImg = '';
-  status ? status = '' : status = 'disabled'
+  btnStatus ? btnStatus = '' : btnStatus = 'disabled'
+
+  var urgentStatus = listType.urgent
+  var cardUrgent = urgentStatus;
+  urgentStatus ? urgentImg = '-active' : urgentImg = '';
+  cardUrgent ? cardUrgent = 'urgent-active' : cardUrgent = ''
+  
   rightMain.insertAdjacentHTML("afterbegin",`
-    <section id="${listType.id}" class="task-card-container">
+    <section id="${listType.id}" class="${cardUrgent} task-card-container">
       <h3 class="task-card-title">${listType.title}</h3>
       <section id="card-tasks" class="task-card-items">
       </section>
       <div class="card-option-container">
         <div class="urgent-container">
-          <img src="assets/urgent.svg" class="urgent-img">
+          <img src="assets/urgent${urgentImg}.svg" class="${cardUrgent} urgent-img">
           <p class="urgent-text">URGENT</p>
         </div>
         <div class="delete-container">
-          <button ${status} class="delete-btn">
+          <button ${btnStatus} class="delete-btn">
             <img src="assets/delete${deleteImg}.svg" class="delete-img delete-list-img">
           </button
           <p class="delete-text">DELETE</p>
@@ -66,6 +75,7 @@ function displayList(listType) {
       </div>
     </section>`);
   if(list.tasks.length) {
+    lists.push(list)
     list.saveToStorage();
     displayTasks(listType)
     list = new List();
@@ -153,7 +163,7 @@ function removeCard() {
   list.tasks.forEach((task, i) => {
     taskContainer.id == task.id ? list.tasks.splice(i, 1) : null;
   });
-  list.deleteFromStorage();
+  list.saveToStorage();
 }
 
 function displayCheck() {
@@ -180,10 +190,38 @@ function trackCheck() {
   });
 }
 
+function displayUrgency() {
+  var closestCard = event.target.closest('.task-card-container');
+  var urgentIcon = closestCard.querySelector('img.urgent-img')
+  if (urgentIcon.classList.contains('urgent-active')) {
+    urgentIcon.src = 'assets/urgent.svg';
+    urgentIcon.classList.remove('urgent-active');
+    closestCard.classList.remove('urgent-active');
+  } else {
+    urgentIcon.src = 'assets/urgent-active.svg';
+    urgentIcon.classList.add('urgent-active');
+    closestCard.classList.add('urgent-active');
+  }
+  markCardUrgent();
+}
+
+function markCardUrgent() {
+  var urgentCard = event.target.closest('.task-card-container');
+  var itemToUpdate = lists.find(function(taskList) {
+    return taskList.id == urgentCard.id;
+  });
+  if(!itemToUpdate.urgent) {
+    itemToUpdate.urgent = true;
+  } else {
+    itemToUpdate.urgent = false;
+  }
+  list.saveToStorage()
+}
+
 function parseObject() {
   var fullList = [];
   lists.forEach(lsList => {
-    var newList = new List(lsList.title, lsList.id, lsList.tasks)
+    var newList = new List(lsList.title, lsList.id, lsList.tasks, lsList.urgent)
     fullList.push(newList);
     displayList(newList);
     displayTasks(newList);
